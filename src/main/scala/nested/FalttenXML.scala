@@ -5,7 +5,7 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 import com.databricks.spark.xml
 import com.databricks.spark.xml.XmlDataFrameReader
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.sql.functions.{col, explode}
+import org.apache.spark.sql.functions.{col, explode_outer}
 import org.apache.spark.sql.types.{ArrayType, StructType}
 
 import scala.collection.mutable
@@ -23,7 +23,7 @@ object FalttenXML {
       if(xml_data_df.schema(column_name).dataType.isInstanceOf[ArrayType]){
         println("Inside isInstance loop: "+ column_name)
 
-        xml_data_df = xml_data_df.withColumn(column_name, explode(xml_data_df(column_name)).alias(column_name))
+        xml_data_df = xml_data_df.withColumn(column_name, explode_outer(xml_data_df(column_name)).alias(column_name))
         select_clause_list :+= column_name
       }
 
